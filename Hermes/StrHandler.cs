@@ -48,8 +48,16 @@ namespace Hermes
 
             foreach (string lang in languages)
             {
-                // TODO: Add it so if the path doesn't end with localizedstrings to not go back 2 directories and instead use the exe directory
-                string langPath = Path.GetFullPath(Path.Combine(path, "..", "..", lang, "localizedstrings")); // Hardcoding the path isn't ideal, but subdirs are (mostly) pointless in localizedstrings regardless.
+                string langPath = String.Empty;
+                if(path.ToLower().EndsWith("localizedstrings"))
+                {
+                    langPath = Path.GetFullPath(Path.Combine(path, "..", "..", lang, "localizedstrings")); // Hardcoding the path isn't ideal, but subdirs are (mostly) pointless in localizedstrings regardless.
+                }
+                else
+                {
+                    langPath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "Output", lang, "localizedstrings")); // If the str file is not coming from localizedstrings, create an output folder in the exe dir
+                }
+                
                 Directory.CreateDirectory(langPath);
 
                 string strFile = Path.Combine(langPath, file);
