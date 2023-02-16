@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Text;
+using Hermes.Logic;
 
 namespace Hermes
 {
@@ -20,7 +21,7 @@ namespace Hermes
                 return;
             }
 
-            StrHandler handler = new StrHandler();
+            StrHandler handler = new();
             foreach (var arg in args)
             {
                 string file = Path.GetFileName(arg);

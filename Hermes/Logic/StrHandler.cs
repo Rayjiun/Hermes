@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hermes
+namespace Hermes.Logic
 {
     internal class StrHandler
     {
@@ -16,10 +16,10 @@ namespace Hermes
         {
             string[] lines = File.ReadAllLines(file);
 
-            for(int i = 0; i < lines.Length; i++)
+            for (int i = 0; i < lines.Length; i++)
             {
                 string line = lines[i].ToLower().Trim(); // Trim it here, to remove any whitespace before the word reference
-                if(line.Contains("reference"))
+                if (line.Contains("reference"))
                 {
                     line = line[9..].Trim(); // Trim again for safety
                     localizedText.Add(Path.GetFileNameWithoutExtension(file).ToUpper() + "_" + line.ToUpper()); // This is how 3arc formats their localized strings
@@ -48,16 +48,16 @@ namespace Hermes
 
             foreach (string lang in languages)
             {
-                string langPath = String.Empty;
-                if(path.ToLower().EndsWith("localizedstrings"))
+                string langPath = string.Empty;
+                if (path.ToLower().EndsWith("localizedstrings"))
                 {
-                    langPath = Path.GetFullPath(Path.Combine(path, "..", "..", lang, "localizedstrings")); // Hardcoding the path isn't ideal, but subdirs are (mostly) pointless in localizedstrings regardless.
+                    langPath = Path.GetFullPath(Path.Combine(path, "..", "..", lang, "localizedstrings")); // Hardcoding the path isn't ideal, but subdirs are (mostly) pointless in localizedstrings regardless. Move to recursive method to fix this?
                 }
                 else
                 {
                     langPath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "Output", lang, "localizedstrings")); // If the str file is not coming from localizedstrings, create an output folder in the exe dir
                 }
-                
+
                 Directory.CreateDirectory(langPath);
 
                 string strFile = Path.Combine(langPath, file);
