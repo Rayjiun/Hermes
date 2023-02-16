@@ -1,6 +1,9 @@
-﻿using System.Reflection;
+﻿using System.IO;
+using System.Numerics;
+using System.Reflection;
 using System.Text;
 using Hermes.Logic;
+using Hermes.Utility;
 
 namespace Hermes
 {
@@ -10,14 +13,14 @@ namespace Hermes
         {
             Console.WriteLine("---------------------------------------------------------------------------------------------------");
             Console.WriteLine("Hermes, a drag and drop tool for BO3 to automatically support all languages for localized strings. ");
-            Console.WriteLine("Version: 1.1.0");
+            Console.WriteLine("Version: 1.2.0");
             Console.WriteLine("---------------------------------------------------------------------------------------------------");
             Console.WriteLine("");
 
             if (args.Length == 0)
             {
-                Console.WriteLine("No files were specified. \nPress enter to exit.");
-                Console.ReadLine();
+                Hermes.Utility.CLI.ErrorMessage("* No files were specified.");
+                Hermes.Utility.CLI.WaitForUserConfirmation();
                 return;
             }
 
@@ -28,35 +31,34 @@ namespace Hermes
                 
                 if (!File.Exists(file))
                 {
-                    Console.WriteLine("File does not exist.");
+                    Hermes.Utility.CLI.ErrorMessage("* File does not exist");
                     continue;
                 }
 
                 if (Path.GetExtension(file).ToLower() != ".str")
                 {
-                    Console.WriteLine($"{file} has the wrong extension.");
+                    Hermes.Utility.CLI.ErrorMessage($"* {file} has the wrong extension.");
                     continue;
                 }
 
-                string path = Path.GetDirectoryName(arg);
+                string? path = Path.GetDirectoryName(arg);
                 if (path == null)
                 {
-                    Console.WriteLine("Path is null.");
+                    Hermes.Utility.CLI.ErrorMessage("* Path is null");
                     continue;
                 }
 
-                Console.WriteLine($"> Copying {file}");
+                Hermes.Utility.CLI.WaitMessage($"> Copying {file}");
 
                 handler.AddLocalizedText(file);
-                handler.CopyLanguagesToPaths(arg, path, file);
+                StrHandler.CopyLanguagesToPaths(arg, path, file);
 
-                Console.WriteLine($"! Completed copying {file}");
+                Hermes.Utility.CLI.SuccessMessage($"! Completed copying {file}");
             }
 
             handler.MakePrecacheTxt();
-
-            Console.WriteLine("\nAll files copied, please check out precaches.txt located in your exe directory. \nPress enter to exit.");
-            Console.ReadLine();
+            Hermes.Utility.CLI.NeutralMessage("\nAll files copied, please check out precaches.txt located in your exe directory.");
+            Hermes.Utility.CLI.WaitForUserConfirmation();
         }
     }
 
