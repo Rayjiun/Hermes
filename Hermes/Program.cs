@@ -12,8 +12,8 @@ namespace Hermes
         static void Main(string[] args)
         {
             Console.WriteLine("---------------------------------------------------------------------------------------------------");
-            Console.WriteLine("Hermes, a drag and drop tool for BO3 to automatically support all languages for localized strings. ");
-            Console.WriteLine("Version: 1.2.0");
+            Console.WriteLine(" Hermes, a drag and drop tool for BO3 to automatically support all languages for localized strings. ");
+            Console.WriteLine(" Version: 1.2.0");
             Console.WriteLine("---------------------------------------------------------------------------------------------------");
             Console.WriteLine("");
 

@@ -32,6 +32,38 @@ namespace Hermes.Logic
         }
 
         /// <summary>
+        /// Writes a new string file with the correct language key
+        /// </summary>
+        /// <param name="file"> File to replace </param>
+        /// <param name="path"> Directory to put the file </param>
+        /// <param name="language"> Which language we need to support </param>
+        public static void WriteNewStrFile(string file, string path, string language)
+        {
+            string[] lines = File.ReadAllLines(file);
+            List<string> newLines = new();
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                string line = lines[i];
+                // Replace the keyword of the language to the correct one. This is technically not necessary, but it doesn't hurt for the sake of consistensy
+                if (line.Contains("LANG_"))
+                {
+                    string[] currentLanguage = line.Split('"');
+                    line = line.Replace(currentLanguage[0].Trim(), "LANG_" + language.ToUpper()); // Trim it here, so we don't replace the whitespaces
+                }
+
+                newLines.Add(line);
+            }
+
+            using FileStream txt = new(Path.Combine(path, file), FileMode.OpenOrCreate, FileAccess.Write);
+            using StreamWriter streamTxt = new(txt);
+            foreach (string newLine in newLines)
+            {
+                streamTxt.WriteLine(newLine);
+            }
+        }
+
+        /// <summary>
         /// Copies all the files to the correct language file path
         /// </summary>
         /// <param name="fullPath"> The full path of the file (including the file) </param>
@@ -59,9 +91,10 @@ namespace Hermes.Logic
             {
                 string langPath, combinedPath;
 
-                if (path.ToLower().EndsWith("localizedstrings"))
+                if (path.Contains("localizedstrings")) // path.ToLower().EndsWith("localizedstrings")
                 {
-                    combinedPath = Path.Combine(path, "..", "..", lang, "localizedstrings"); // Hardcoding the path isn't ideal, but subdirs are (mostly) pointless in localizedstrings regardless. Move to recursive method to fix this?
+                    combinedPath = Hermes.Utility.Location.GetLocalizationPath(path, languages, lang);
+                    // combinedPath = Path.Combine(path, "..", "..", lang, "localizedstrings"); // Hardcoding the path isn't ideal, but subdirs are (mostly) pointless in localizedstrings regardless. Move to recursive method to fix this?
                 }
                 else
                 {
@@ -77,7 +110,7 @@ namespace Hermes.Logic
                     continue;
                 }
 
-                File.Copy(fullPath, Path.Combine(langPath, file));
+                WriteNewStrFile(file, langPath, lang); // Potentially always write a new file anyways to replace it with the proper language
             }
         }
 
@@ -88,16 +121,14 @@ namespace Hermes.Logic
         {
             string file = Path.GetFullPath(Path.Combine(Hermes.Utility.Location.GetExeDirectory(), "precaches.txt"));
 
-            using (FileStream txt = new(file, FileMode.OpenOrCreate, FileAccess.Write))
-            using (StreamWriter streamTxt = new(txt))
-            {
-                streamTxt.Write("Please be reminded to change \"string\" to \"triggerstring\" if it's for (uni)triggers. \n\n");
+            using FileStream txt = new(file, FileMode.OpenOrCreate, FileAccess.Write);
+            using StreamWriter streamTxt = new(txt);
+            streamTxt.Write("Please be reminded to change \"string\" to \"triggerstring\" if it's for (uni)triggers. \n\n");
 
-                // Write out all the necessary precaches
-                foreach (string localized in localizedText)
-                {
-                    streamTxt.WriteLine($"#precache(\"string\", \"{localized}\");");
-                }
+            // Write out all the necessary precaches
+            foreach (string localized in localizedText)
+            {
+                streamTxt.WriteLine($"#precache(\"string\", \"{localized}\");");
             }
         }
 
