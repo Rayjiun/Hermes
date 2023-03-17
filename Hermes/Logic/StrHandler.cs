@@ -93,12 +93,12 @@ namespace Hermes.Logic
 
                 if (path.Contains("localizedstrings")) // path.ToLower().EndsWith("localizedstrings")
                 {
-                    combinedPath = Hermes.Utility.Location.GetLocalizationPath(path, languages, lang);
+                    combinedPath = Location.GetLocalizationPath(path, languages, lang);
                     // combinedPath = Path.Combine(path, "..", "..", lang, "localizedstrings"); // Hardcoding the path isn't ideal, but subdirs are (mostly) pointless in localizedstrings regardless. Move to recursive method to fix this?
                 }
                 else
                 {
-                    combinedPath = Path.Combine(Hermes.Utility.Location.GetExeDirectory(), "Output", lang, "localizedstrings"); // If the str file is not coming from localizedstrings, create an output folder in the exe dir
+                    combinedPath = Path.Combine(Location.GetExeDirectory(), "Output", lang, "localizedstrings"); // If the str file is not coming from localizedstrings, create an output folder in the exe dir
                 }
 
                 langPath = Path.GetFullPath(combinedPath);
@@ -119,7 +119,7 @@ namespace Hermes.Logic
         /// </summary>
         public void MakePrecacheTxt()
         {
-            string file = Path.GetFullPath(Path.Combine(Hermes.Utility.Location.GetExeDirectory(), "precaches.txt"));
+            string file = Path.GetFullPath(Path.Combine(Location.GetExeDirectory(), "precaches.txt"));
 
             using FileStream txt = new(file, FileMode.OpenOrCreate, FileAccess.Write);
             using StreamWriter streamTxt = new(txt);

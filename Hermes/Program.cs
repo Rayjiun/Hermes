@@ -19,8 +19,8 @@ namespace Hermes
 
             if (args.Length == 0)
             {
-                Hermes.Utility.CLI.ErrorMessage("* No files were specified.");
-                Hermes.Utility.CLI.WaitForUserConfirmation();
+                CLI.ErrorMessage("* No files were specified.");
+                CLI.WaitForUserConfirmation();
                 return;
             }
 
@@ -31,34 +31,34 @@ namespace Hermes
                 
                 if (!File.Exists(file))
                 {
-                    Hermes.Utility.CLI.ErrorMessage("* File does not exist");
+                    CLI.ErrorMessage("* File does not exist");
                     continue;
                 }
 
                 if (Path.GetExtension(file).ToLower() != ".str")
                 {
-                    Hermes.Utility.CLI.ErrorMessage($"* {file} has the wrong extension.");
+                    CLI.ErrorMessage($"* {file} has the wrong extension.");
                     continue;
                 }
 
                 string? path = Path.GetDirectoryName(arg);
                 if (path == null)
                 {
-                    Hermes.Utility.CLI.ErrorMessage("* Path is null");
+                    CLI.ErrorMessage("* Path is null");
                     continue;
                 }
 
-                Hermes.Utility.CLI.WaitMessage($"> Copying {file}");
+                CLI.WaitMessage($"> Copying {file}");
 
                 handler.AddLocalizedText(file);
                 StrHandler.CopyLanguagesToPaths(arg, path, file);
 
-                Hermes.Utility.CLI.SuccessMessage($"! Completed copying {file}");
+                CLI.SuccessMessage($"! Completed copying {file}");
             }
 
             handler.MakePrecacheTxt();
-            Hermes.Utility.CLI.NeutralMessage("\nAll files copied, please check out precaches.txt located in your exe directory.");
-            Hermes.Utility.CLI.WaitForUserConfirmation();
+            CLI.NeutralMessage("\nAll files copied, please check out precaches.txt located in your exe directory.");
+            CLI.WaitForUserConfirmation();
         }
     }
 
