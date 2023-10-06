@@ -14,7 +14,7 @@ Download Hermes from the [Releases](https://github.com/MikeyRay/Hermes/releases)
 Once downloaded, you can use the .exe to your advantage! Drag and drop any string files onto it and the rest will be done for you.
 
 # Credits
-- MikeyRay: Developer
+- Rayjiun: Developer
 - [Planet](https://github.com/RealPlanet/): Assistance
 - BritishPie: Icon
 
