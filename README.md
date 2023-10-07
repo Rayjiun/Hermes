@@ -6,7 +6,7 @@ A drag and drop tool to convert your string files to all languages for Call of D
 - Spits out a .txt with all the necessary precaches for optimal performance
 
 # Requirements:
-- .NET Framework 6.0.0
+- .NET 6.0.0
 
 # How to use
 Download Hermes from the [Releases](https://github.com/Rayjiun/Hermes/releases) section.
