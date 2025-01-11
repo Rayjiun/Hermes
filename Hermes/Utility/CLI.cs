@@ -27,11 +27,11 @@ namespace Hermes.Utility
         public static void NoticeMessage(string message) => ColouredPrint(ConsoleColor.Yellow, message);
 
         /// <summary>
-        /// Waits for the user to input a key to exit the program
+        /// Waits for the user to input a key to continue
         /// </summary>
-        public static void WaitForUserConfirmation()
+        public static void WaitForUserConfirmation(string message = "Press any key to exit.")
         {
-            NeutralMessage("Press any key to exit.");
+            NoticeMessage(message);
             Console.ReadKey();
         }
     }
