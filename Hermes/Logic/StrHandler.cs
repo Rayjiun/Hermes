@@ -87,6 +87,8 @@ namespace Hermes.Logic
                 "traditionalchinese"
             };
 
+            bool shouldOverrideFile = false;
+
             foreach (string lang in languages)
             {
                 string langPath, combinedPath;
@@ -105,9 +107,10 @@ namespace Hermes.Logic
                 Directory.CreateDirectory(langPath);
                 string strFile = Path.Combine(langPath, file);
 
-                if (File.Exists(strFile))
+                if (!shouldOverrideFile && File.Exists(strFile))
                 {
-                    continue;
+                    shouldOverrideFile = true;
+                    CLI.WaitForUserConfirmation("File already exists. Press any key to continue. This will override any existing .str file");
                 }
 
                 WriteNewStrFile(file, langPath, lang); // Potentially always write a new file anyways to replace it with the proper language
